@@ -6,10 +6,16 @@ My Warehouse
 My-Warehouse is a boilerplate project using nestjs and postgress with the Domain Driven Design(DDD) pattern being applied.
 This project includes example e2e test implementation testing the Product and Category endpoints.
 
-Entity Diagram
-![alt text](https://github.com/NikosPanourakis/nestjs-warehouse-boilerplate/main/img/entity-diagram.png?raw=true)
+### Entity Diagram
+
+![alt text](https://github.com/NikosPanourakis/nestjs-warehouse-boilerplate/blob/main/img/entity-diagram.png?raw=true)
 
 A category can have many sub-categories specified by the parent_id which is the parent category in this case.
+
+### Project architecture
+
+As an example the following diagram shows the transformation stages which the product passes through. With this method the Product is being encapsulated depending on the layer.
+![alt text](https://github.com/NikosPanourakis/nestjs-warehouse-boilerplate/blob/main/img/ddd.png?raw=true)
 
 ## API Documentaion
 ### Fetching a product
@@ -43,7 +49,7 @@ Returns 201 and created product.
 Returns 200 on success.
 Returns 404 when no product is found.
 
-Check the swagger documentation url for more info
+-> Check the swagger documentation url for more info
 ```localhost:3000/api``` 
 
 ## Installation
@@ -76,3 +82,7 @@ $ yarn test
 # e2e tests
 $ yarn test:e2e
 ```
+
+## Licence
+
+[MIT License](https://github.com/NikosPanourakis/nestjs-warehouse-boilerplate/main/licence.md).
