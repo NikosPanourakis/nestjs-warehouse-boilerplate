@@ -1,11 +1,50 @@
-![example workflow](https://github.com/proxywashor/nest-boilerplate/actions/workflows/main.yml/badge.svg)
+![workflow](https://github.com/NikosPanourakis/nestjs-warehouse-boilerplate/actions/workflows/main.yml/badge.svg)
 
 My Warehouse
 
 ## Description
 My-Warehouse is a boilerplate project using nestjs and postgress with the Domain Driven Design(DDD) pattern being applied.
-This project includes example e2e test implementation testing the Product and Category endpoints. Github Actions are run 
-when creating or changing PR's.
+This project includes example e2e test implementation testing the Product and Category endpoints.
+
+Entity Diagram
+![alt text](https://github.com/NikosPanourakis/nestjs-warehouse-boilerplate/main/img/entity-diagram.png?raw=true)
+
+A category can have many sub-categories specified by the parent_id which is the parent category in this case.
+
+## API Documentaion
+### Fetching a product
+`GET /product/:id`
+### Response
+```
+{
+    "productId": "pid",
+    "productName": "test product",
+    "categoryId": "c1"
+}
+```
+Returns 404 when no product is found.
+
+### Creating a product
+`POST /product`
+
+    // payload
+    {
+        "productId": "pid",
+        "productName": "test product",
+        "categoryId": "c1"
+    }
+Returns 400 when validation fails or product already exists.
+Returns 201 and created product.
+
+### Deleting a product
+`DELETE /product/:id`
+
+### Response
+Returns 200 on success.
+Returns 404 when no product is found.
+
+Check the swagger documentation url for more info
+```localhost:3000/api``` 
 
 ## Installation
 
@@ -16,29 +55,24 @@ $ yarn install
 ## Running the app
 
 ```bash
+# spinup the docker container 
+$ docker-compose up 
+```
+
+```bash
 # development
-$ yarn run start
+$ yarn start
 
 # watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+$ yarn start:dev
 ```
 
 ## Test
 
 ```bash
 # unit tests
-$ yarn run test
+$ yarn test
 
 # e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+$ yarn test:e2e
 ```
-
-## License
-
-[MIT licensed](LICENSE).
