@@ -1,4 +1,3 @@
-import { ProductDto } from '@@app/product/controllers/dto/product.dto';
 import { Product } from '@@domain/product/models/product.model';
 import { IProductRepository } from '@@domain/product/repositories/product-repository.interface';
 import { ProductEntity } from '@@infra/db/product/product.entity';
@@ -17,7 +16,7 @@ export class ProductRepository implements IProductRepository {
     return plainToInstance(Product, foundProduct);
   }
 
-  async save(product: ProductDto): Promise<Product> {
+  async save(product: Product): Promise<Product> {
     const savedProduct = await this.product.save(plainToInstance(ProductEntity, product));
 
     return plainToInstance(Product, savedProduct);

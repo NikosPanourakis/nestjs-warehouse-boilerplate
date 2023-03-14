@@ -7,6 +7,7 @@ import { AppDataSource } from '../utils/data-source';
 import { ProductEntity } from '@@infra/db/product/product.entity';
 import { CategoryEntity } from '@@infra/db/category/category.entity';
 import { ProductDto } from '@@app/product/controllers/dto/product.dto';
+import { ChangeProductDetailsDto } from '@@app/product/controllers/dto/change-product.dto';
 
 describe('Product controller (e2e)', () => {
   let app: INestApplication;
@@ -73,6 +74,35 @@ describe('Product controller (e2e)', () => {
       const payload: Partial<ProductDto> = { productId: '3', categoryId: 'cat2' };
 
       return request(app.getHttpServer()).post('/product').send(payload).expect(400);
+    });
+  });
+
+  describe('(PUT) /product', () => {
+    it('should update product name', async () => {
+      // create a category
+      const category = { categoryId: 'cat1', categoryName: 'cat_name' };
+      await dataSource.getRepository(CategoryEntity).save(category);
+
+      // create a product
+      const product = { productId: '1', productName: 'pName', categoryId: 'cat1' };
+      await dataSource.getRepository(ProductEntity).save(product);
+
+      const payload: ChangeProductDetailsDto = { productName: 'newProductName' };
+
+      const response = await request(app.getHttpServer()).put(`/product/${product.productId}`).send(payload).expect(200);
+      expect(response.body.productName).toStrictEqual('newProductName');
+
+      const result = await dataSource.getRepository(ProductEntity).findOne({ where: { productId: product.productId } });
+      expect(result.productName).toStrictEqual('newProductName');
+
+      // should not change category
+      expect(result.categoryId).toStrictEqual('cat1');
+    });
+
+    it('should return 400 if product does not exist', async () => {
+      const payload: ChangeProductDetailsDto = { productName: 'pName' };
+
+      return request(app.getHttpServer()).put(`/product/1`).send(payload).expect(400);
     });
   });
 });
