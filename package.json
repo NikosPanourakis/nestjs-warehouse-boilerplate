@@ -1,10 +1,10 @@
 {
-  "name": "project",
+  "name": "my-warehouse",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
-  "private": true,
-  "license": "UNLICENSED",
+  "description": "Boilerplate on nestjs for a warehouse management system",
+  "author": "Nikos Panourakis",
+  "license": "MIT",
+  "keywords": ["nestjs", "typescript", "posgres", "warehouse"],
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

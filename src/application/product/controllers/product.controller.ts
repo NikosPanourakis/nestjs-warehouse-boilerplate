@@ -1,8 +1,9 @@
+import { ChangeProductDetailsDto } from '@@app/product/controllers/dto/change-product.dto';
 import { CreateProductDto } from '@@app/product/controllers/dto/create-product.dto';
 import { ProductDto } from '@@app/product/controllers/dto/product.dto';
 import { ICategoryRepository } from '@@domain/category/repositories/category-repository.interface';
+import { Product } from '@@domain/product/models/product.model';
 import { IProductRepository } from '@@domain/product/repositories/product-repository.interface';
-import { ProductEntity } from '@@infra/db/product/product.entity';
 import {
   BadRequestException,
   Body,
@@ -12,6 +13,7 @@ import {
   NotFoundException,
   Param,
   Post,
+  Put,
   UsePipes,
   ValidationPipe
 } from '@nestjs/common';
@@ -46,7 +48,29 @@ export class ProductController {
     if (!category) {
       throw new BadRequestException(`Category ${createProductDto.categoryId} does not exist.`);
     }
-    const savedProduct = await this.prodRepo.save(plainToInstance(ProductEntity, createProductDto));
+
+    const product = await this.prodRepo.getById(createProductDto.productId);
+    if (product) {
+      throw new BadRequestException(`Product ${createProductDto.productId} already exists.`);
+    }
+
+    const savedProduct = await this.prodRepo.save(plainToInstance(Product, createProductDto));
+
+    return plainToInstance(ProductDto, savedProduct);
+  }
+
+  @Put(':id')
+  @ApiBody({
+    description: 'Change product name and description',
+    type: ChangeProductDetailsDto
+  })
+  async changeProductDetails(@Body() changeProductDto: ChangeProductDetailsDto, @Param('id') id: string): Promise<ProductDto> {
+    const product = await this.prodRepo.getById(id);
+    if (!product) {
+      throw new BadRequestException(`Product ${id} does not exist.`);
+    }
+
+    const savedProduct = await this.prodRepo.save(plainToInstance(Product, { ...changeProductDto, productId: id }));
 
     return plainToInstance(ProductDto, savedProduct);
   }

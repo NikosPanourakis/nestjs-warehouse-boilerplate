@@ -33,7 +33,6 @@ Returns 404 when no product is found.
 ### Creating a product
 `POST /product`
 
-    // payload
     {
         "productId": "pid",
         "productName": "test product",
@@ -41,6 +40,15 @@ Returns 404 when no product is found.
     }
 Returns 400 when validation fails or product already exists.
 Returns 201 and created product.
+
+### Updating a product
+`PUT /product/:id`
+
+    {
+        "productName": "test product"
+    }
+Returns 400 when validation fails or product already exists.
+Returns 200 and updated product.
 
 ### Deleting a product
 `DELETE /product/:id`
